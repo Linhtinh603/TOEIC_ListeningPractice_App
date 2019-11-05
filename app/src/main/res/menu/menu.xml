@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/all"
+        android:title="Làm hết tất cả các câu">
+    </item>
+
+    <item android:id="@+id/notpass"
+        android:title="Làm những câu chưa hoàn thành">
+    </item>
+</menu>
