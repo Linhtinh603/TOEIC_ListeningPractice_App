@@ -9,12 +9,11 @@
     tools:context=".MainActivity">
 
     <TextView
-        style="@style/TextColor"
         android:id="@+id/textView4"
+        style="@style/TextColor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="116dp"
-        android:layout_marginTop="16dp"
         android:text="16035801 - Huỳnh Cao Hữu Linh"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
@@ -49,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="116dp"
         android:layout_marginTop="24dp"
-        android:text="16035801 - Huỳnh Cao Hữu Linh"
+        android:text="16033631 - Trần Hồng Lê"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 

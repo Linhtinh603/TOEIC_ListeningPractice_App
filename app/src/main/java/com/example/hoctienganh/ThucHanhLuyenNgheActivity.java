@@ -24,13 +24,14 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 
-public class ThucHanhLuyenNgheActivity extends AppCompatActivity implements View.OnClickListener {
+public class ThucHanhLuyenNgheActivity extends AppCompatActivity implements View.OnClickListener, Runnable {
     Button btnPause, btnStop, btnGoiY, btnKetThuc, btnA, btnB, btnC, btnD;
     TextView tvBoDe, tvCau;
     ImageView img;
     SeekBar seekBar;
+    int totalQuestion = 0;
     int position = 0;
-    int questionLoaded = 1;
+    int questionLoaded = 0;
     int rightAnswer = 0;
     private ArrayList<Integer> questions;
     private ArrayList<Part1Object> listBaiNghe;
@@ -52,7 +53,6 @@ public class ThucHanhLuyenNgheActivity extends AppCompatActivity implements View
         tvBoDe = findViewById(R.id.tvBoDe);
         tvCau = findViewById(R.id.tvCau);
         seekBar = findViewById(R.id.seekBar);
-       www.journaldev.com/22203/android-media-player-song-with-seekbar
 
         btnA.setOnClickListener(this);
         btnB.setOnClickListener(this);
@@ -61,6 +61,7 @@ public class ThucHanhLuyenNgheActivity extends AppCompatActivity implements View
 
         databaseHelper = new DatabaseHelper(ThucHanhLuyenNgheActivity.this);
         loadAllData();
+        totalQuestion = listBaiNghe.size();
         fileNghe.start();
         btnPause.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +87,30 @@ public class ThucHanhLuyenNgheActivity extends AppCompatActivity implements View
             @Override
             public void onClick(View view) {
                 showDialog();
+            }
+        });
+        btnKetThuc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onFinishClick();
+            }
+        });
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                    if(b){
+                        fileNghe.seekTo(i);
+                    }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
             }
         });
     }
@@ -185,18 +210,29 @@ public class ThucHanhLuyenNgheActivity extends AppCompatActivity implements View
         if(position > listBaiNghe.size() - 1){
             position = 0;
         }
-        int index = listBaiNghe.get(position).getId();
-        String id = String.valueOf("f"+index);
-        int audio = this.getResources().getIdentifier(id, "raw", getPackageName());
-        fileNghe = MediaPlayer.create(this, audio);
-        img.setImageResource(R.drawable.h1);
-        btnPause.setBackgroundResource(R.drawable.pause);
-        questionLoaded++;
-        int bode = (index/6)+1;
-        int cau = index%6;
-        tvBoDe.setText("Bộ đề số: "+bode );
-        tvCau.setText("Câu số: "+cau+"/6");
+        if(listBaiNghe.size() == 0){
+            Toast.makeText(getApplicationContext(),"Bạn đã hoàn thành hết tất cả các câu!", Toast.LENGTH_SHORT).show();
 
+        }else{
+            int index = listBaiNghe.get(position).getId();
+            String id = String.valueOf("f"+index);
+            int audio = this.getResources().getIdentifier(id, "raw", getPackageName());
+            fileNghe = MediaPlayer.create(this, audio);
+
+            String idh = String.valueOf("h"+index);
+            int image = this.getResources().getIdentifier(idh, "drawable", getPackageName());
+            img.setImageResource(image);
+
+            btnPause.setBackgroundResource(R.drawable.pause);
+            questionLoaded++;
+            int bode = (index/6)+1;
+            int cau = index%6;
+            tvBoDe.setText("Bộ đề số: "+bode );
+            tvCau.setText("Câu số: "+cau+"/6");
+            seekBar.setProgress(0);
+            seekBar.setMax(fileNghe.getDuration());
+            new Thread(this).start();
+        }
     }
 
     private void loadAllData(){
@@ -225,20 +261,22 @@ public class ThucHanhLuyenNgheActivity extends AppCompatActivity implements View
     public void checkAnswer(String key){
         if(listBaiNghe.get(position).getRightAnswer().equalsIgnoreCase(key)){
             rightAnswer++;
-        }
-        if(databaseHelper.setPassQuestion(listBaiNghe.get(position).getId())){
-            Toast.makeText(getApplicationContext(),"Chính xác", Toast.LENGTH_SHORT).show();
+            if(databaseHelper.setPassQuestion(listBaiNghe.get(position).getId())){
+                Toast.makeText(getApplicationContext(),"Chính xác", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
     public void onFinishClick(){
         Intent intent = new Intent(ThucHanhLuyenNgheActivity.this,KetQua.class);
         intent.putExtra("right", rightAnswer );
-        intent.putExtra("totalQuestion", questionLoaded );
-         startActivity(intent);
-
+        intent.putExtra("questionLoaded", questionLoaded );
+        intent.putExtra("totalQuestion", totalQuestion );
+        int passedQuestion = databaseHelper.getPassPart1();
+        intent.putExtra("passedQuestion", passedQuestion );
+        startActivity(intent);
     }
-    boolean doubleBackToExitPressedOnce = false;
+
     @Override
     public void onBackPressed() {
         fileNghe.stop();
@@ -250,5 +288,24 @@ public class ThucHanhLuyenNgheActivity extends AppCompatActivity implements View
         super.onStop();
         fileNghe.stop();
         finish();
+    }
+
+    @Override
+    public void run() {
+        int currentPosition = fileNghe.getCurrentPosition();
+        int total = fileNghe.getDuration();
+
+
+        while (fileNghe != null && fileNghe.isPlaying() && currentPosition < total) {
+            try {
+                Thread.sleep(10);
+                currentPosition = fileNghe.getCurrentPosition();
+            } catch (InterruptedException e) {
+                return;
+            } catch (Exception e) {
+                return;
+            }
+            seekBar.setProgress(currentPosition);
+        }
     }
 }

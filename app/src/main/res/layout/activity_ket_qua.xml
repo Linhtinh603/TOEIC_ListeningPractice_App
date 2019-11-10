@@ -1,9 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="#edf6fb"
     tools:context=".KetQua">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        style="@style/title"
+        android:id="@+id/tvTitle"
+        android:layout_width="match_parent"
+        android:layout_height="69dp"
+        android:text="KẾT QUẢ LUYỆN NGHE" />
+
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        app:srcCompat="@drawable/result"
+        tools:layout_editor_absoluteX="146dp"
+        tools:layout_editor_absoluteY="45dp" />
+
+    <TextView
+        style="@style/violetColor"
+        android:id="@+id/tvKetQuaHienTai"
+        android:layout_width="244dp"
+        android:layout_height="70dp"
+        android:text="Bạn đã trả lời đúng"
+        tools:layout_editor_absoluteX="155dp"
+        tools:layout_editor_absoluteY="262dp" />
+
+    <TextView
+        style="@style/violetColor"
+        android:id="@+id/tvKetQuaTong"
+        android:layout_width="match_parent"
+        android:layout_height="69dp"
+        android:text="Bạn đã hoàn thành" />
+
+    <Button
+        android:id="@+id/btnClose"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Đóng" />
+</LinearLayout>

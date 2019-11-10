@@ -10,4 +10,16 @@
     <style name="TextColor">
         <item name="android:textColor">#FEF9E7</item>
     </style>
+    <style name="violetColor">
+        <item name="android:textColor">#df0043</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+    <style name="title">
+
+        <item name="android:fontFamily">monospace</item>
+        <item name="android:textSize">25dp</item>
+        <item name="android:textAlignment">center</item>
+    </style>
 </resources>

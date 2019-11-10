@@ -14,10 +14,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     DatabaseHelper(Context context){
         super(context,"Database_HocTiengAnh",null,1);
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        sqLiteDatabase.execSQL("Drop table if exists Part1");
-        onCreate(sqLiteDatabase);
-        deleteAll();
-        insertData();
+//        sqLiteDatabase.execSQL("Drop table if exists Part1");
+//        onCreate(sqLiteDatabase);
+//        deleteAll();
+//        insertData();
     }
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
@@ -28,6 +28,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 +"answerCScript text,"
                 +"answerDScript text,"
                 +"pass integer)");
+
     }
 
     @Override
@@ -100,6 +101,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return  list;
     }
 
+    public int getPassPart1(){
+        int count = 0;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM Part1 WHERE pass = 1",null);
+        if(cursor!=null && cursor.moveToFirst() ){
+            count = cursor.getInt(0);
+        }
+        return count;
+    }
+
     public boolean setPassQuestion(int id){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -120,16 +131,108 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void loadData(){
 
-        Part1Object bai1 = new Part1Object(0,"A", "A","B","C","D",true);
-        Part1Object bai2 = new Part1Object(0,"B", "A","B","C","D",false);
-        Part1Object bai3 = new Part1Object(0,"C", "A","B","C","D",true);
-        Part1Object bai4 = new Part1Object(0,"D", "A","B","C","D",false);
+        listBaiNghe.add(new Part1Object(0,
+                "A",
+                "One of the men is writing on a document",
+                "One of the men is checking his watch",
+                "One of the men is looking in a drawer",
+                "One of the men is passing out pens from a box",
+                false));
 
+        listBaiNghe.add(new Part1Object(0,
+                "A",
+                "They're hanging a picture on a wall",
+                "They're setting the table",
+                "They're opening the window ",
+                " They're rearranging some furniture",
+                false));
+        listBaiNghe.add(new Part1Object(0,
+                "D",
+                "She's putting away a microscopy",
+                "She's taking off a coat",
+                "She's examining some safety glasses",
+                "She's using some laboratory equipment",
+                false));
+        listBaiNghe.add(new Part1Object(0,
+                "C",
+                "A man is pushing a shopping cart",
+                "A man is waiting to make a purchase",
+                "A man is holding some merchandise",
+                "A man is assembling some shelves",
+                false));
+        listBaiNghe.add(new Part1Object(0,
+                "B",
+                "Some customer are leaving a shop ",
+                "A seating area is decorated with plants ",
+                "A worker is repairing some light fixtures",
+                "A bench is being moved into a corner",
+                false));
 
-        listBaiNghe.add(bai1);
-        listBaiNghe.add(bai2);
-        listBaiNghe.add(bai3);
-        listBaiNghe.add(bai4);
+        listBaiNghe.add(new Part1Object(0,
+                "D",
+                "Some suitcases are being loaded onto a bus",
+                "Some buses are parked in a garage",
+                "Some buses are parked in garage",
+                "Some people are lined up at the side of a road",
+                false));
+        listBaiNghe.add(new Part1Object(0,
+                "D",
+                "Some suitcases are being loaded onto a bus",
+                "Some buses are parked in a garage",
+                "Some buses are parked in garage",
+                "Some people are lined up at the side of a road",
+                false));
+        listBaiNghe.add(new Part1Object(0,
+                "D",
+                "He's picking up a bag",
+                "He's cycling on a road ",
+                "He's climbing some a rocks",
+                "He's wearing a jacket",
+                false));
+        listBaiNghe.add(new Part1Object(0,
+                "A",
+                "They're seated in awaiting area",
+                "One's  of the women is moving a chair ",
+                "One's  of the women is watering a plant",
+                "The're plancing books on a table",
+                false));
+        listBaiNghe.add(new Part1Object(0,
+                "C",
+                "The man is pushing a shopping cart",
+                "A man is paying  for some groceries ",
+                "Some merchandise is arranged on shelves",
+                "Some baskets are lined up on the floor",
+                false));
+
+        listBaiNghe.add(new Part1Object(0,
+                "A",
+                "A wonman's working at a laptop computer",
+                "A wonman's drinking some bottle",
+                "A woman's stacking some furniture",
+                "A wonman's putting iteams in  a backpack",
+                false));
+
+        listBaiNghe.add(new Part1Object(0,
+                "B",
+                "A stage has been set up indoors",
+                "Some people are watching a performance",
+                "People are waiting in line for tickets",
+                "A concert hall  is unoccupied",
+                false));
+        listBaiNghe.add(new Part1Object(0,
+                "C",
+                "Some pedestrians are cross at an intersection",
+                "Tree branches are being cleared off a walk a walkway",
+                "Some vehicles are facing a low wall",
+                "A car is exiting a parking garage",
+                false));
+        listBaiNghe.add(new Part1Object(0,
+                "B",
+                "A woman is making a pot of coffee",
+                "A woman is wearing s pair",
+                "A woman is stacking dishes",
+                "A woman is carrying some trays",
+                false));
     }
 
     public void insertData(){
